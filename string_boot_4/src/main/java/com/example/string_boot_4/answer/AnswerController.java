@@ -6,6 +6,7 @@ import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -35,8 +36,7 @@ public class AnswerController {
             return "question_detail";
         }
 
-        Answer answer = this.answerService.create(question,
-                answerForm.getContent(), siteUser);
+        Answer answer = this.answerService.create(question, answerForm.getContent(), siteUser);
         return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
     }
 

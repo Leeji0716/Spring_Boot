@@ -32,7 +32,6 @@ public class QuestionService {
     public Question getQuestion(Integer id){
         Optional<Question> question = this.questionRepository.findById(id);
         if (question.isPresent()){ //질문이 존재함
-//            question.get().setHit(question.get().getHit()+1);
             return question.get();
         }else {
             throw new DataNotFoundException("question not found");

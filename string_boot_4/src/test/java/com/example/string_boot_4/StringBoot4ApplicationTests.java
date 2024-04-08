@@ -2,6 +2,7 @@ package com.example.string_boot_4;
 
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.answer.AnswerRepository;
+import com.example.string_boot_4.answer.AnswerService;
 import com.example.string_boot_4.question.Question;
 import com.example.string_boot_4.question.QuestionRepository;
 import com.example.string_boot_4.question.QuestionService;
@@ -69,6 +70,17 @@ class StringBoot4ApplicationTests {
 			String subject = String.format("테스트 데이터입니다:[%03d]", i);
 			String content = "내용무";
 			this.questionService.create(subject, content, null);
+		}
+	}
+
+	@Autowired
+	private AnswerService answerService;
+	@Test
+	void test4() {
+		for (int i = 1; i <= 30; i++) {
+			String content = String.format("댓글 페이징 테스트 데이터입니다:[%03d]", i);
+			Question q = questionService.getQuestion(306);
+			this.answerService.create(q, content, null);
 		}
 	}
 

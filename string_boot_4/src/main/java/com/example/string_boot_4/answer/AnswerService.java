@@ -4,9 +4,15 @@ import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.question.Question;
 import com.example.string_boot_4.user.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -45,5 +51,11 @@ public class AnswerService {
     public void vote(Answer answer, SiteUser siteUser){
         answer.getVoter().add(siteUser);
         this.answerRepository.save(answer);
+    }
+    public Page<Answer> getList(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.answerRepository.findAll(pageable);
     }
 }

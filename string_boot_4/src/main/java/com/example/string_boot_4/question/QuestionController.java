@@ -1,11 +1,15 @@
 package com.example.string_boot_4.question;
 
+import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.answer.AnswerForm;
+import com.example.string_boot_4.answer.AnswerService;
 import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,7 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
+    private final AnswerService answerService;
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw){
@@ -31,11 +36,12 @@ public class QuestionController {
         model.addAttribute("kw", kw);
         return "question_list";
     }
-
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value = "page", defaultValue = "0") int answerPage){
         Question question = this.questionService.getQuestion(id);
         this.questionService.hitPlus(question);
+        Page<Answer> answerPaging = this.answerService.getList(answerPage);
+        model.addAttribute("answerPaging", answerPaging);
         model.addAttribute("question", question);
         return "question_detail";
     }
