@@ -1,8 +1,7 @@
 package com.example.string_boot_4.user;
 
-import com.example.string_boot_4.DataNotFoundException;
+import com.example.string_boot_4.domain.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

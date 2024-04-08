@@ -1,4 +1,4 @@
-package com.example.string_boot_4;
+package com.example.string_boot_4.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

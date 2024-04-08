@@ -1,6 +1,6 @@
 package com.example.string_boot_4.question;
 
-import com.example.string_boot_4.DataNotFoundException;
+import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.user.SiteUser;
 import jakarta.persistence.criteria.*;
@@ -32,6 +32,7 @@ public class QuestionService {
     public Question getQuestion(Integer id){
         Optional<Question> question = this.questionRepository.findById(id);
         if (question.isPresent()){ //질문이 존재함
+//            question.get().setHit(question.get().getHit()+1);
             return question.get();
         }else {
             throw new DataNotFoundException("question not found");
@@ -80,4 +81,10 @@ public class QuestionService {
             }
         };
     }
+    public void hitPlus(Question question){
+        int hit = question.getHit() + 1;
+        question.setHit(hit);
+        this.questionRepository.save(question);
+    }
+
 }

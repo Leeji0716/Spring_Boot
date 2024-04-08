@@ -1,6 +1,6 @@
 package com.example.string_boot_4.answer;
 
-import com.example.string_boot_4.DataNotFoundException;
+import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.question.Question;
 import com.example.string_boot_4.user.SiteUser;
 import lombok.RequiredArgsConstructor;

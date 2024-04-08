@@ -1,4 +1,4 @@
-package com.example.string_boot_4;
+package com.example.string_boot_4.domain;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

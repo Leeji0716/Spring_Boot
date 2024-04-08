@@ -36,4 +36,6 @@ public class Question {
 
     @ManyToMany
     Set<SiteUser> voter;
+
+    private int hit;
 }
