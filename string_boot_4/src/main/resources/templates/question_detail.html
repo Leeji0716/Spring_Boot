@@ -39,6 +39,13 @@
                    class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
                    th:text="삭제"></a>
+                <a th:href="@{|/question/comment/${question.id}|}" class="btn btn-sm btn-outline-secondary">
+                    댓글
+                    <span class="text-danger small ms-2"
+                          th:if="${#lists.size(question.commentList) > 0}"
+                          th:text="${#lists.size(question.commentList)}">
+                    </span>
+                </a>
             </div>
         </div>
     </div>
@@ -76,7 +83,7 @@
                    class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
                    th:text="삭제"></a>
-                <a th:href="@{|/answer/detail/${answer.id}|}" class="btn btn-sm btn-outline-secondary">
+                <a th:href="@{|/answer/comment/${answer.id}|}" class="btn btn-sm btn-outline-secondary">
                     댓글
                     <span class="text-danger small ms-2"
                           th:if="${#lists.size(answer.commentList) > 0}"

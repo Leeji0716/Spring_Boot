@@ -94,10 +94,10 @@ public class AnswerController {
         return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
     }
 
-    @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id) {
+    @GetMapping(value = "/comment/{id}")
+    public String comment(Model model, @PathVariable("id") Integer id) {
         Answer answer = this.answerService.getAnswer(id);
         model.addAttribute("answer", answer);
-        return "answer_detail";
+        return "answer_comment";
     }
 }

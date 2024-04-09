@@ -7,7 +7,7 @@
 </head>
 <body>
 <div layout:fragment="content" class="container">
-    <h5 class="my-3 border-bottom pb-2">답변</h5>
+    <h5 class="my-3 border-bottom pb-2">댓글</h5>
     <form th:object="${commentForm}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>

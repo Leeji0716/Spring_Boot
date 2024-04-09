@@ -40,14 +40,24 @@ public class CommentController {
     @PostMapping("/create/{id}")
     public String createComment(Model model, @PathVariable("id") Integer id,
                                @Valid CommentForm commentForm , BindingResult bindingResult, Principal principal) {
-        Answer answer = this.answerService.getAnswer(id);
-        SiteUser siteUser = this.userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
-            model.addAttribute("answer", answer);
+            model.addAttribute("commentForm", commentForm);
             return "comment_form";
         }
-        Comment comment = this.commentService.create(answer, commentForm.getContent(), siteUser);
-        return String.format("redirect:/answer/detail/%s", comment.getAnswer().getId());
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        if (isQuestion(id)) {
+            Question question = questionService.getQuestion(id);
+            Comment comment = this.commentService.create((Question) question, commentForm.getContent(), siteUser);
+            return String.format("redirect:/question/comment/%s", comment.getQuestion().getId());
+        } else {
+            Answer answer = answerService.getAnswer(id);
+            Comment comment = this.commentService.create((Answer) answer, commentForm.getContent(), siteUser);
+            return String.format("redirect:/answer/comment/%s", comment.getAnswer().getId());
+        }
+    }
+    private boolean isQuestion(Integer parentId) {
+        Question question = questionService.getQuestion(parentId);
+        return question != null && question.getSubject() != null;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -73,7 +83,7 @@ public class CommentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.commentService.modify(comment, commentForm.getContent());
-        return String.format("redirect:/answer/detail/%s", comment.getAnswer().getId());
+        return String.format("redirect:/answer/comment/%s", comment.getAnswer().getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -84,6 +94,6 @@ public class CommentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
         this.commentService.delete(comment);
-        return String.format("redirect:/answer/detail/%s", comment.getAnswer().getId());
+        return String.format("redirect:/answer/comment/%s", comment.getAnswer().getId());
     }
 }

@@ -3,6 +3,7 @@ package com.example.string_boot_4.comment;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.question.Question;
+import com.example.string_boot_4.question.QuestionService;
 import com.example.string_boot_4.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,12 +21,22 @@ import java.util.Optional;
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final QuestionService questionService;
 
     public Comment create(Answer answer, String content, SiteUser author){
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setCreateDate(LocalDateTime.now());
         comment.setAnswer(answer);
+        comment.setAuthor(author);
+        this.commentRepository.save(comment);
+        return comment;
+    }
+    public Comment create(Question question, String content, SiteUser author){
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setCreateDate(LocalDateTime.now());
+        comment.setQuestion(question);
         comment.setAuthor(author);
         this.commentRepository.save(comment);
         return comment;
@@ -49,4 +60,6 @@ public class CommentService {
     public void delete(Comment comment) {
         this.commentRepository.delete(comment);
     }
+
+
 }
