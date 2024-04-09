@@ -57,7 +57,4 @@ public class AnswerService {
         answer.getVoter().add(siteUser);
         this.answerRepository.save(answer);
     }
-
-
-
 }

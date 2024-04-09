@@ -5,9 +5,6 @@ import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.user.SiteUser;
 import jakarta.persistence.criteria.*;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,21 +23,60 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private HttpServletRequest request;
 
-    public Page<Question> getList(int page, String kw) {
+    public Pageable sortDate(int page){
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return PageRequest.of(page, 10, Sort.by(sorts));
+    }
+
+    public Pageable sortHit(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("hit"));
+        return PageRequest.of(page, 10, Sort.by(sorts));
+    }
+
+//    public Pageable sortVote(int page){
+//        List<Sort.Order> sorts = new ArrayList<>();
+//        sorts.add(Sort.Order.desc("voter"));
+//        return PageRequest.of(page, 10, Sort.by(sorts));
+//    }
+
+    public Page<Question> getList(int page, String kw, int sort) {
+        Pageable pageable = null;
+        if (sort == 1){
+            pageable = sortDate(page);
+        }
+        else if (sort == 2){
+            pageable = sortHit(page);
+        }
+//        else {
+//            pageable = sortVote(page);
+//        }
         return this.questionRepository.findAllByKeyword(kw, pageable);
     }
 
+    public Page<Question> getList(int page, String kw) {
+        Pageable pageable = sortDate(page);
+        return this.questionRepository.findAllByKeyword(kw, pageable);
+    }
+
+//    public Page<Answer> getAnswersForQuestion(Question question, int page, int sort) {
+//        Pageable pageable = null;
+//        if (sort == 1){
+//            pageable = sortDate(page);
+//        }else if (sort == 2){
+//            pageable = sortHit(page);
+//        }
+//        return answerRepository.findByQuestion(question, pageable);
+//    }
+
     public Page<Answer> getAnswersForQuestion(Question question, int page) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Pageable pageable = sortDate(page);
         return answerRepository.findByQuestion(question, pageable);
     }
+
+
 
     public Question getQuestion(Integer id){
         Optional<Question> question = this.questionRepository.findById(id);

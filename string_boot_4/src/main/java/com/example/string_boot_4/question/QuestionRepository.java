@@ -1,6 +1,7 @@
 package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.Answer;
+import com.example.string_boot_4.user.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Question findBySubject(String subject);
@@ -16,7 +18,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     List<Question> findBySubjectLike(String subject);
     Page<Question> findAll(Pageable pageable);
     Page<Question> findAll(Specification<Question> spec, Pageable pageable);
-
 
     @Query("select "
             + "distinct q "
