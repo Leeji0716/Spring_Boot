@@ -1,5 +1,7 @@
 package com.example.string_boot_4.answer;
 
+import com.example.string_boot_4.comment.Comment;
+import com.example.string_boot_4.comment.CommentRepository;
 import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.question.Question;
 import com.example.string_boot_4.user.SiteUser;
@@ -9,6 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,4 +57,7 @@ public class AnswerService {
         answer.getVoter().add(siteUser);
         this.answerRepository.save(answer);
     }
+
+
+
 }

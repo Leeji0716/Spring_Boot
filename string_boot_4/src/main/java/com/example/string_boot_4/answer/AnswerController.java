@@ -1,6 +1,9 @@
 package com.example.string_boot_4.answer;
 
+import com.example.string_boot_4.comment.Comment;
+import com.example.string_boot_4.comment.CommentForm;
 import com.example.string_boot_4.question.Question;
+import com.example.string_boot_4.question.QuestionForm;
 import com.example.string_boot_4.question.QuestionService;
 import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
@@ -26,6 +29,11 @@ public class AnswerController {
     private final UserService userService;
 
     @PreAuthorize("isAuthenticated()")
+    @GetMapping("/create")
+    public String createAnswer(AnswerForm answerForm) {
+        return "answer_form";
+    }
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Integer id,
                                @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
@@ -33,7 +41,7 @@ public class AnswerController {
         SiteUser siteUser = this.userService.getUser(principal.getName());
         if (bindingResult.hasErrors()) {
             model.addAttribute("question", question);
-            return "question_detail";
+            return "answer_form";
         }
 
         Answer answer = this.answerService.create(question, answerForm.getContent(), siteUser);
@@ -84,5 +92,12 @@ public class AnswerController {
         SiteUser siteUser = this.userService.getUser(principal.getName());
         this.answerService.vote(answer, siteUser);
         return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
+    }
+
+    @GetMapping(value = "/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Integer id) {
+        Answer answer = this.answerService.getAnswer(id);
+        model.addAttribute("answer", answer);
+        return "answer_detail";
     }
 }

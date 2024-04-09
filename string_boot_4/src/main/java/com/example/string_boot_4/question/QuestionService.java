@@ -5,6 +5,9 @@ import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.user.SiteUser;
 import jakarta.persistence.criteria.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private HttpServletRequest request;
 
     public Page<Question> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();

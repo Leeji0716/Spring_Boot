@@ -76,6 +76,13 @@
                    class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
                    th:text="삭제"></a>
+                <a th:href="@{|/answer/detail/${answer.id}|}" class="btn btn-sm btn-outline-secondary">
+                    댓글
+                    <span class="text-danger small ms-2"
+                          th:if="${#lists.size(answer.commentList) > 0}"
+                          th:text="${#lists.size(answer.commentList)}">
+                    </span>
+                </a>
             </div>
         </div>
     </div>

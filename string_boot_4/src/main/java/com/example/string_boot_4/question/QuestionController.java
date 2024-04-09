@@ -5,6 +5,7 @@ import com.example.string_boot_4.answer.AnswerForm;
 import com.example.string_boot_4.answer.AnswerService;
 import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,8 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
+    private HttpServletResponse response;
+
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw){

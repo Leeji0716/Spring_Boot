@@ -1,6 +1,7 @@
 package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.Answer;
+import com.example.string_boot_4.comment.Comment;
 import com.example.string_boot_4.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -38,4 +39,7 @@ public class Question {
     Set<SiteUser> voter;
 
     private int hit;
+
+    @OneToMany(mappedBy = "question")
+    private List<Comment> commentList;
 }

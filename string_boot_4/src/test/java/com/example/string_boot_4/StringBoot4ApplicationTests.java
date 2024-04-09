@@ -77,9 +77,9 @@ class StringBoot4ApplicationTests {
 	private AnswerService answerService;
 	@Test
 	void test4() {
-		for (int i = 1; i <= 30; i++) {
-			String content = String.format("댓글 페이징 테스트 데이터입니다:[%03d]", i);
-			Question q = questionService.getQuestion(306);
+		for (int i = 1; i <= 100; i++) {
+			String content = String.format("답변 페이징 테스트 데이터입니다:[%03d]", i);
+			Question q = questionService.getQuestion(307);
 			this.answerService.create(q, content, null);
 		}
 	}

@@ -1,5 +1,6 @@
 package com.example.string_boot_4.answer;
 
+import com.example.string_boot_4.comment.Comment;
 import com.example.string_boot_4.question.Question;
 import com.example.string_boot_4.user.SiteUser;
 import jakarta.persistence.*;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,4 +34,7 @@ public class Answer {
 
     @ManyToMany
     Set<SiteUser> voter;
+
+    @OneToMany(mappedBy = "answer")
+    private List<Comment> commentList;
 }
