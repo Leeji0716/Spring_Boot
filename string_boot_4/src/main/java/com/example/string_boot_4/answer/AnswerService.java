@@ -52,10 +52,4 @@ public class AnswerService {
         answer.getVoter().add(siteUser);
         this.answerRepository.save(answer);
     }
-    public Page<Answer> getList(int page) {
-        List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        return this.answerRepository.findAll(pageable);
-    }
 }

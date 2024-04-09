@@ -27,7 +27,6 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
-    private final AnswerService answerService;
     @GetMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw){
@@ -37,12 +36,12 @@ public class QuestionController {
         return "question_list";
     }
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value = "page", defaultValue = "0") int answerPage){
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value = "page", defaultValue = "0") int page){
         Question question = this.questionService.getQuestion(id);
         this.questionService.hitPlus(question);
-        Page<Answer> answerPaging = this.answerService.getList(answerPage);
-        model.addAttribute("answerPaging", answerPaging);
+        Page<Answer> answerPaging = this.questionService.getAnswersForQuestion(question, page);
         model.addAttribute("question", question);
+        model.addAttribute("answerPaging", answerPaging);
         return "question_detail";
     }
 

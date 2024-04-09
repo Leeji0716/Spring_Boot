@@ -1,5 +1,6 @@
 package com.example.string_boot_4.question;
 
+import com.example.string_boot_4.answer.AnswerRepository;
 import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.user.SiteUser;
@@ -21,12 +22,20 @@ import java.util.Optional;
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     public Page<Question> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.questionRepository.findAllByKeyword(kw, pageable);
+    }
+
+    public Page<Answer> getAnswersForQuestion(Question question, int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return answerRepository.findByQuestion(question, pageable);
     }
 
     public Question getQuestion(Integer id){

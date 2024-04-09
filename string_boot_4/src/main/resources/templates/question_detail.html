@@ -46,8 +46,7 @@
     <h5 class="border-bottom my-3 py-2"
         th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
     <!-- 답변 반복 시작 -->
-    <div class="card my-3" th:each="answer, loop : ${answerPaging}">
-        <td th:text="${answerPaging.getTotalElements - (answerPaging.number * answerPaging.size) - loop.index}"></td>
+    <div class="card my-3" th:each="answer : ${answerPaging}">
         <a th:id="|answer_${answer.id}|"></a>
         <div class="card-body">
             <div class="card-text" th:utext="${@commonUtil.markdown(answer.content)}"></div>
@@ -91,7 +90,6 @@
                 </a>
             </li>
             <li th:each="page: ${#numbers.sequence(0, answerPaging.totalPages-1)}"
-                th:if="${page >= answerPaging.number-5 and page <= answerPaging.number+5}"
                 th:classappend="${page == answerPaging.number} ? 'active'"
                 class="page-item">
                 <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
