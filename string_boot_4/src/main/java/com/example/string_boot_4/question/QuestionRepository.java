@@ -1,8 +1,6 @@
 package com.example.string_boot_4.question;
 
-import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.category.Category;
-import com.example.string_boot_4.user.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,13 +9,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
+    List<Category> findByCategory(String board);
+    Category findCategory(String board);
     Question findBySubject(String subject);
     Question findBySubjectAndContent(String subject, String content);
     List<Question> findBySubjectLike(String subject);
     Page<Question> findAll(Pageable pageable);
+    Page<Question> findAllByCategory(Pageable pageable, String board);
     Page<Question> findAll(Specification<Question> spec, Pageable pageable);
 
     @Query("select distinct q "

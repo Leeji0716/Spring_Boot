@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @Controller
 public class CategoryController {
+    private CategoryService categoryService;
+
+    @GetMapping("/list")
+    private String list(@RequestParam(value = "brd", defaultValue = "QaA") String brd){
+        return "category_list";
+    }
 
     @GetMapping("list")
     private String list(@RequestParam(value = "id", defaultValue = "1") int id){

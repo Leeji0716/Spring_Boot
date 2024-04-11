@@ -2,17 +2,13 @@ package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.answer.AnswerForm;
-import com.example.string_boot_4.answer.AnswerService;
 import com.example.string_boot_4.category.Category;
 import com.example.string_boot_4.category.CategoryService;
 import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,9 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.security.Principal;
-import java.util.List;
 
 @RequestMapping("/question")
 @RequiredArgsConstructor

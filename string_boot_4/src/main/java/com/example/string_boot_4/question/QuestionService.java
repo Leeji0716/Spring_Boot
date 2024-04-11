@@ -71,11 +71,11 @@ public class QuestionService {
         return answerRepository.findByQuestion(question, pageable);
     }
 
-    public Question getQuestion(Integer id){
+    public Question getQuestion(Integer id) {
         Optional<Question> question = this.questionRepository.findById(id);
-        if (question.isPresent()){ //질문이 존재함
+        if (question.isPresent()) { //질문이 존재함
             return question.get();
-        }else {
+        } else {
             throw new DataNotFoundException("question not found");
         }
     }

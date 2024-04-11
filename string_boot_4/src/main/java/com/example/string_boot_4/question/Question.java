@@ -28,13 +28,13 @@ public class Question {
 
     private LocalDateTime createDate;
 
+    private LocalDateTime modifyDate;
+
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
 
     @ManyToOne
     private SiteUser author;
-
-    private LocalDateTime modifyDate;
 
     @ManyToMany
     Set<SiteUser> voter;
@@ -44,7 +44,7 @@ public class Question {
 
     private int hit;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
     @ManyToOne
