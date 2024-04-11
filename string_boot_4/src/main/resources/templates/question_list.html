@@ -10,7 +10,7 @@
 <div layout:fragment="content" class="container my-3">
     <div class="row my-3">
         <div class="col-6">
-            <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+            <a th:href="@{|/question/create/${id}|}" class="btn btn-primary">질문 등록하기</a>
         </div>
         <div class="col-6">
             <div class="input-group">
@@ -19,9 +19,9 @@
             </div>
         </div>
     </div>
-    <a th:href="@{|/question/list?sort=Date|}" class="recommend btn btn-sm btn-outline-secondary">최신순</a>
-    <a th:href="@{|/question/list?sort=Hit|}" class="recommend btn btn-sm btn-outline-secondary">조회순</a>
-    <a th:href="@{|/question/list?sort=Vote|}" class="recommend btn btn-sm btn-outline-secondary">추천순</a>
+    <a th:href="@{|/question/list/${id}?sort=Date|}" class="recommend btn btn-sm btn-outline-secondary">최신순</a>
+    <a th:href="@{|/question/list/${id}?sort=Hit|}" class="recommend btn btn-sm btn-outline-secondary">조회순</a>
+    <a th:href="@{|/question/list/${id}?sort=Vote|}" class="recommend btn btn-sm btn-outline-secondary">추천순</a>
     <table class="table">
         <thead class="table-dark">
         <tr class="text-center">
