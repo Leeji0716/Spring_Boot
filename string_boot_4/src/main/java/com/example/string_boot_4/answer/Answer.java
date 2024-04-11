@@ -35,6 +35,9 @@ public class Answer {
     @ManyToMany
     Set<SiteUser> voter;
 
+    @Column(nullable = false)
+    private int voteCount; // 투표한 사용자 수를 나타내는 필드
+
     @OneToMany(mappedBy = "answer")
     private List<Comment> commentList;
 }

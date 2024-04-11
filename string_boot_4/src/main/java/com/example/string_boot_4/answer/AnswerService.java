@@ -55,6 +55,8 @@ public class AnswerService {
 
     public void vote(Answer answer, SiteUser siteUser){
         answer.getVoter().add(siteUser);
+        int vote = answer.getVoter().size();
+        answer.setVoteCount(vote);
         this.answerRepository.save(answer);
     }
 }

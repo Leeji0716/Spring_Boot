@@ -31,28 +31,27 @@ public class QuestionController {
     private HttpServletResponse response;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                       @RequestParam(value = "kw", defaultValue = "") String kw){
-        Page<Question> paging = this.questionService.getList(page, kw);
-        model.addAttribute("paging", paging);
-        model.addAttribute("kw", kw);
-        return "question_list";
-    }
-    @GetMapping("/list/{sort}")
-    public String list(Model model, @PathVariable("sort") int sort, @RequestParam(value = "page", defaultValue = "0") int page,
+    public String list(Model model,
+                       @RequestParam(value = "sort", defaultValue = "Date") String sort,
+                       @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw){
         Page<Question> paging = this.questionService.getList(page, kw, sort);
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
+        model.addAttribute("sort", sort);
         return "question_list";
     }
     @GetMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, @RequestParam(value = "page", defaultValue = "0") int page){
+    public String detail(Model model,
+                         @PathVariable("id") Integer id, AnswerForm answerForm,
+                         @RequestParam(value = "sort", defaultValue = "Date") String sort,
+                         @RequestParam(value = "page", defaultValue = "0") int page){
         Question question = this.questionService.getQuestion(id);
         this.questionService.hitPlus(question);
-        Page<Answer> answerPaging = this.questionService.getAnswersForQuestion(question, page);
+        Page<Answer> answerPaging = this.questionService.getAnswersForQuestion(question, page, sort);
         model.addAttribute("question", question);
         model.addAttribute("answerPaging", answerPaging);
+        model.addAttribute("sort", sort);
         return "question_detail";
     }
 

@@ -36,47 +36,34 @@ public class QuestionService {
         return PageRequest.of(page, 10, Sort.by(sorts));
     }
 
-//    public Pageable sortVote(int page){
-//        List<Sort.Order> sorts = new ArrayList<>();
-//        sorts.add(Sort.Order.desc("voter"));
-//        return PageRequest.of(page, 10, Sort.by(sorts));
-//    }
+    public Pageable sortVote(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("voteCount"));
+        return PageRequest.of(page, 10, Sort.by(sorts));
+    }
 
-    public Page<Question> getList(int page, String kw, int sort) {
+    public Page<Question> getList(int page, String kw, String sort) {
         Pageable pageable = null;
-        if (sort == 1){
+        if (sort.equals("Date")){
             pageable = sortDate(page);
         }
-        else if (sort == 2){
+        else if (sort.equals("Hit")){
             pageable = sortHit(page);
+        }else if (sort.equals("Vote")){
+            pageable = sortVote(page);
         }
-//        else {
-//            pageable = sortVote(page);
-//        }
         return this.questionRepository.findAllByKeyword(kw, pageable);
     }
 
-    public Page<Question> getList(int page, String kw) {
-        Pageable pageable = sortDate(page);
-        return this.questionRepository.findAllByKeyword(kw, pageable);
-    }
-
-//    public Page<Answer> getAnswersForQuestion(Question question, int page, int sort) {
-//        Pageable pageable = null;
-//        if (sort == 1){
-//            pageable = sortDate(page);
-//        }else if (sort == 2){
-//            pageable = sortHit(page);
-//        }
-//        return answerRepository.findByQuestion(question, pageable);
-//    }
-
-    public Page<Answer> getAnswersForQuestion(Question question, int page) {
-        Pageable pageable = sortDate(page);
+    public Page<Answer> getAnswersForQuestion(Question question, int page, String sort) {
+        Pageable pageable = null;
+        if (sort.equals("Date")){
+            pageable = sortDate(page);
+        }else if (sort.equals("Vote")){
+            pageable = sortVote(page);
+        }
         return answerRepository.findByQuestion(question, pageable);
     }
-
-
 
     public Question getQuestion(Integer id){
         Optional<Question> question = this.questionRepository.findById(id);
@@ -109,6 +96,8 @@ public class QuestionService {
 
     public void vote(Question question, SiteUser siteUser){
         question.getVoter().add(siteUser);
+        int vote = question.getVoter().size();
+        question.setVoteCount(vote);
         this.questionRepository.save(question);
     }
 

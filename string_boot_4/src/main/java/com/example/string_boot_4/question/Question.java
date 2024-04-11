@@ -38,6 +38,9 @@ public class Question {
     @ManyToMany
     Set<SiteUser> voter;
 
+    @Column(nullable = false)
+    private int voteCount;
+
     private int hit;
 
     @OneToMany(mappedBy = "question")

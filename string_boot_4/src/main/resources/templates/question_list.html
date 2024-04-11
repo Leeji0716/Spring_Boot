@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>질문 목록</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
@@ -19,17 +19,9 @@
             </div>
         </div>
     </div>
-    <!-- Example split danger button -->
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            정렬
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" th:href="@{|/question/list/1|}">최신순</a></li>
-            <li><a class="dropdown-item" th:href="@{|/question/list/2|}">조회순</a></li>
-            <li><a class="dropdown-item" href="#">추천순</a></li>
-        </ul>
-    </div>
+    <a th:href="@{|/question/list?sort=Date|}" class="recommend btn btn-sm btn-outline-secondary">최신순</a>
+    <a th:href="@{|/question/list?sort=Hit|}" class="recommend btn btn-sm btn-outline-secondary">조회순</a>
+    <a th:href="@{|/question/list?sort=Vote|}" class="recommend btn btn-sm btn-outline-secondary">추천순</a>
     <table class="table">
         <thead class="table-dark">
         <tr class="text-center">
@@ -38,6 +30,7 @@
             <th>글쓴이</th>
             <th>작성일시</th>
             <th>조회수</th>
+            <th>추천수</th>
         </tr>
         </thead>
         <tbody>
@@ -53,37 +46,40 @@
             <td><span th:if="${question.author != null}" th:text="${question.author.username}"></span></td>
             <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="${question.hit}"></td>
+            <td th:text="${question.voteCount}"></td>
         </tr>
         </tbody>
     </table>
-    <!-- 페이징처리 시작 -->
     <div th:if="${!paging.isEmpty()}">
         <ul class="pagination justify-content-center">
+            <!-- Previous Page Link -->
             <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number-1}">
+                <a class="page-link" th:href="@{${sort} + '?page=' + ${paging.number - 1} + '&kw=' + ${kw}}">
                     <span>이전</span>
                 </a>
             </li>
+            <!-- Page Number Links -->
             <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
                 th:if="${page >= paging.number-5 and page <= paging.number+5}"
                 th:classappend="${page == paging.number} ? 'active'"
                 class="page-item">
-                <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
+                <a th:text="${page}" class="page-link" th:href="@{${sort} + '?page=' + ${page} + '&kw=' + ${kw}}"></a>
             </li>
+            <!-- Next Page Link -->
             <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" href="javascript:void(0)" th:data-page="${paging.number+1}">
+                <a class="page-link" th:href="@{${sort} + '?page=' + ${paging.number + 1} + '&kw=' + ${kw}}">
                     <span>다음</span>
                 </a>
             </li>
         </ul>
     </div>
     <!-- 페이징처리 끝 -->
-    <form th:action="@{/question/list}" method="get" id="searchForm">
-        <input type="hidden" id="kw" name="kw" th:value="${kw}">
+    <form th:href="@{${sort} + '?page=' + ${paging.number + 1} + '&kw=' + ${kw}}" method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${paging.number}">
+        <input type="hidden" id="kw" name="kw" th:value="${kw}">
     </form>
 </div>
-<script layout:fragment="script" type='text/javascript' src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+<script layout:fragment="script" type='text/javascript'>
     const page_elements = document.getElementsByClassName("page-link");
     Array.from(page_elements).forEach(function(element) {
         element.addEventListener('click', function() {
@@ -98,6 +94,5 @@
         document.getElementById('searchForm').submit();
     });
 </script>
-
 </body>
 </html>
