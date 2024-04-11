@@ -69,10 +69,25 @@ class StringBoot4ApplicationTests {
 
 	@Test
 	void test3() {
+		Question question = new Question();
 		for (int i = 1; i <= 300; i++) {
-			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String subject = String.format("질문답변 테스트 데이터입니다:[%03d]", i);
 			String content = "내용무";
-			this.questionService.create(subject, content, null);
+			Category category = categoryRepository.findById(2); // 혹은 적절한 카테고리 ID를 찾아서 가져오세요
+			this.questionService.create(subject, content, null, category);
+		}
+	}
+	@Test
+	void test8() {
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("질문답변 테스트 데이터입니다:[%03d]", i);
+			String content = "내용무";
+			Category category = categoryRepository.findById(1); // 혹은 적절한 카테고리 ID를 찾아서 가져오세요
+			Question question = new Question();
+			question.setSubject(subject);
+			question.setContent(content);
+			question.setCategory(category); // 카테고리 설정
+			questionRepository.save(question);
 		}
 	}
 
@@ -92,7 +107,7 @@ class StringBoot4ApplicationTests {
 	@Test
 	void test5(){
 		Category category = new Category();
-		category.setBoard("자유게시판");
+		category.setBoard("강좌");
 		this.categoryRepository.save(category);
 	}
 }

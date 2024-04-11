@@ -1,6 +1,8 @@
 package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.AnswerRepository;
+import com.example.string_boot_4.category.Category;
+import com.example.string_boot_4.category.CategoryRepository;
 import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.user.SiteUser;
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final CategoryRepository categoryRepository;
 
     public Pageable sortDate(int page){
         List<Sort.Order> sorts = new ArrayList<>();
@@ -42,7 +45,8 @@ public class QuestionService {
         return PageRequest.of(page, 10, Sort.by(sorts));
     }
 
-    public Page<Question> getList(int page, String kw, String sort) {
+    public Page<Question> getList(int page, String kw, String sort, int id) {
+        Category category = categoryRepository.findById(id);
         Pageable pageable = null;
         if (sort.equals("Date")){
             pageable = sortDate(page);
@@ -51,8 +55,10 @@ public class QuestionService {
             pageable = sortHit(page);
         }else if (sort.equals("Vote")){
             pageable = sortVote(page);
+        }else {
+            pageable = sortDate(page);
         }
-        return this.questionRepository.findAllByKeyword(kw, pageable);
+        return this.questionRepository.findAllByCategoryAndKeyword(category, kw, pageable);
     }
 
     public Page<Answer> getAnswersForQuestion(Question question, int page, String sort) {
@@ -74,12 +80,13 @@ public class QuestionService {
         }
     }
 
-    public void create(String subject, String content, SiteUser user){
+    public void create(String subject, String content, SiteUser user, Category category){
         Question question = new Question();
         question.setSubject(subject);
         question.setContent(content);
         question.setCreateDate(LocalDateTime.now());
         question.setAuthor(user);
+        question.setCategory(category);
         this.questionRepository.save(question);
     }
 

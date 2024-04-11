@@ -1,6 +1,7 @@
 package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.Answer;
+import com.example.string_boot_4.category.Category;
 import com.example.string_boot_4.comment.Comment;
 import com.example.string_boot_4.user.SiteUser;
 import jakarta.persistence.*;
@@ -45,4 +46,7 @@ public class Question {
 
     @OneToMany(mappedBy = "question")
     private List<Comment> commentList;
+
+    @ManyToOne
+    private Category category;
 }

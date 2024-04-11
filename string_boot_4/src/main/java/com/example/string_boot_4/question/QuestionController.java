@@ -3,6 +3,8 @@ package com.example.string_boot_4.question;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.answer.AnswerForm;
 import com.example.string_boot_4.answer.AnswerService;
+import com.example.string_boot_4.category.Category;
+import com.example.string_boot_4.category.CategoryService;
 import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,17 +30,24 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
-    private HttpServletResponse response;
+    private final CategoryService categoryService;
 
     @GetMapping("/list")
+    public String list(){
+        return "redirect:/question/list/1";
+    }
+
+    @GetMapping("/list/{id}")
     public String list(Model model,
+                       @PathVariable(value = "id") int id,
                        @RequestParam(value = "sort", defaultValue = "Date") String sort,
                        @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "kw", defaultValue = "") String kw){
-        Page<Question> paging = this.questionService.getList(page, kw, sort);
+        Page<Question> paging = this.questionService.getList(page, kw, sort, id);
         model.addAttribute("paging", paging);
         model.addAttribute("kw", kw);
         model.addAttribute("sort", sort);
+        model.addAttribute("id", id);
         return "question_list";
     }
     @GetMapping(value = "/detail/{id}")
@@ -56,20 +65,22 @@ public class QuestionController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/create")
-    public String questionCreate(QuestionForm questionForm){
+    @GetMapping("/create/{id}")
+    public String questionCreate(@PathVariable("id") int id, QuestionForm questionForm){
         return "question_form";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/create")
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal){ //폼 바인딩
+    @PostMapping("/create/{id}")
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal,
+                                 @PathVariable("id") int id){ //폼 바인딩
         if (bindingResult.hasErrors()){
             return "question_form";
         }
         SiteUser siteUser = this.userService.getUser(principal.getName());
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
-        return "redirect:/question/list";
+        Category category = this.categoryService.getCategory(id);
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser, category);
+        return String.format("redirect:/question/list/%s", id);
     }
 
     @PreAuthorize("isAuthenticated()")

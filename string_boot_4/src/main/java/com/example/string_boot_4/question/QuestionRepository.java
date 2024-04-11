@@ -1,6 +1,7 @@
 package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.Answer;
+import com.example.string_boot_4.category.Category;
 import com.example.string_boot_4.user.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,17 +20,16 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Page<Question> findAll(Pageable pageable);
     Page<Question> findAll(Specification<Question> spec, Pageable pageable);
 
-    @Query("select "
-            + "distinct q "
+    @Query("select distinct q "
             + "from Question q "
-            + "left outer join SiteUser u1 on q.author=u1 "
-            + "left outer join Answer a on a.question=q "
-            + "left outer join SiteUser u2 on a.author=u2 "
-            + "where "
-            + "   q.subject like %:kw% "
-            + "   or q.content like %:kw% "
-            + "   or u1.username like %:kw% "
-            + "   or a.content like %:kw% "
-            + "   or u2.username like %:kw% ")
-    Page<Question> findAllByKeyword(@Param("kw") String kw, Pageable pageable);
+            + "left join fetch q.author u1 "
+            + "left join fetch q.answerList a "
+            + "left join fetch a.author u2 "
+            + "where q.category = :category "
+            + "and (q.subject like %:kw% "
+            + "or q.content like %:kw% "
+            + "or u1.username like %:kw% "
+            + "or a.content like %:kw% "
+            + "or u2.username like %:kw%)")
+    Page<Question> findAllByCategoryAndKeyword(@Param("category") Category category, @Param("kw") String kw, Pageable pageable);
 }
