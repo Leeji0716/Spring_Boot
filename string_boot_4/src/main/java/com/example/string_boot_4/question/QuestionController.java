@@ -3,6 +3,7 @@ package com.example.string_boot_4.question;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.answer.AnswerForm;
 import com.example.string_boot_4.answer.AnswerService;
+import com.example.string_boot_4.category.Category;
 import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,7 +29,6 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final UserService userService;
-    private HttpServletResponse response;
 
     @GetMapping("/list")
     public String list(Model model,
@@ -63,7 +63,7 @@ public class QuestionController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal){ //폼 바인딩
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal, String brd){ //폼 바인딩
         if (bindingResult.hasErrors()){
             return "question_form";
         }

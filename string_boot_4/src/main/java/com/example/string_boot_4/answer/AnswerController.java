@@ -1,15 +1,11 @@
 package com.example.string_boot_4.answer;
 
-import com.example.string_boot_4.comment.Comment;
-import com.example.string_boot_4.comment.CommentForm;
 import com.example.string_boot_4.question.Question;
-import com.example.string_boot_4.question.QuestionForm;
 import com.example.string_boot_4.question.QuestionService;
 import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,6 +29,7 @@ public class AnswerController {
     public String createAnswer(AnswerForm answerForm) {
         return "answer_form";
     }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Integer id,

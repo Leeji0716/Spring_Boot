@@ -1,6 +1,8 @@
 package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.AnswerRepository;
+import com.example.string_boot_4.category.Category;
+import com.example.string_boot_4.category.CategoryRepository;
 import com.example.string_boot_4.domain.DataNotFoundException;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.user.SiteUser;
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final CategoryRepository categoryRepository;
 
     public Pageable sortDate(int page){
         List<Sort.Order> sorts = new ArrayList<>();
@@ -65,11 +68,11 @@ public class QuestionService {
         return answerRepository.findByQuestion(question, pageable);
     }
 
-    public Question getQuestion(Integer id){
+    public Question getQuestion(Integer id) {
         Optional<Question> question = this.questionRepository.findById(id);
-        if (question.isPresent()){ //질문이 존재함
+        if (question.isPresent()) { //질문이 존재함
             return question.get();
-        }else {
+        } else {
             throw new DataNotFoundException("question not found");
         }
     }

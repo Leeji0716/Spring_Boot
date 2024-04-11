@@ -1,6 +1,7 @@
 package com.example.string_boot_4.question;
 
 import com.example.string_boot_4.answer.Answer;
+import com.example.string_boot_4.category.Category;
 import com.example.string_boot_4.comment.Comment;
 import com.example.string_boot_4.user.SiteUser;
 import jakarta.persistence.*;
@@ -27,13 +28,13 @@ public class Question {
 
     private LocalDateTime createDate;
 
+    private LocalDateTime modifyDate;
+
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
 
     @ManyToOne
     private SiteUser author;
-
-    private LocalDateTime modifyDate;
 
     @ManyToMany
     Set<SiteUser> voter;
@@ -43,6 +44,9 @@ public class Question {
 
     private int hit;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
+//
+//    @ManyToOne
+//    private Category category;
 }
