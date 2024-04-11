@@ -54,7 +54,7 @@
         <ul class="pagination justify-content-center">
             <!-- Previous Page Link -->
             <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link" th:href="@{${sort} + '?page=' + ${paging.number - 1} + '&kw=' + ${kw}}">
+                <a class="page-link" th:href="@{'?sort=' + ${sort} + '&page=' + ${paging.number - 1} + '&kw=' + ${kw}}">
                     <span>이전</span>
                 </a>
             </li>
@@ -63,11 +63,11 @@
                 th:if="${page >= paging.number-5 and page <= paging.number+5}"
                 th:classappend="${page == paging.number} ? 'active'"
                 class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{${sort} + '?page=' + ${page} + '&kw=' + ${kw}}"></a>
+                <a th:text="${page}" class="page-link" th:href="@{'?sort=' + ${sort} + '&page=' + ${page} + '&kw=' + ${kw}}"></a>
             </li>
             <!-- Next Page Link -->
             <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{${sort} + '?page=' + ${paging.number + 1} + '&kw=' + ${kw}}">
+                <a class="page-link" th:href="@{'?sort=' + ${sort} + '&page=' + ${paging.number + 1} + '&kw=' + ${kw}}">
                     <span>다음</span>
                 </a>
             </li>

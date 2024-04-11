@@ -55,17 +55,6 @@ public class QuestionController {
         return "question_detail";
     }
 
-//    @GetMapping(value = "/detail/{id}/{sort}")
-//    public String detail(Model model, @PathVariable("id") Integer id, @RequestParam(value = "sort", defaultValue = "1") Integer sort,
-//                         AnswerForm answerForm, @RequestParam(value = "page", defaultValue = "0") int page){
-//        Question question = this.questionService.getQuestion(id);
-//        this.questionService.hitPlus(question);
-//        Page<Answer> answerPaging = this.questionService.getAnswersForQuestion(question, page, sort);
-//        model.addAttribute("question", question);
-//        model.addAttribute("answerPaging", answerPaging);
-//        return "question_detail";
-//    }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String questionCreate(QuestionForm questionForm){

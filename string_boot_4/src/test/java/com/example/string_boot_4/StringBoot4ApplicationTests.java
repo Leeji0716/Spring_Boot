@@ -3,6 +3,9 @@ package com.example.string_boot_4;
 import com.example.string_boot_4.answer.Answer;
 import com.example.string_boot_4.answer.AnswerRepository;
 import com.example.string_boot_4.answer.AnswerService;
+import com.example.string_boot_4.category.Category;
+import com.example.string_boot_4.category.CategoryRepository;
+import com.example.string_boot_4.category.CategoryService;
 import com.example.string_boot_4.question.Question;
 import com.example.string_boot_4.question.QuestionRepository;
 import com.example.string_boot_4.question.QuestionService;
@@ -84,4 +87,12 @@ class StringBoot4ApplicationTests {
 		}
 	}
 
+	@Autowired
+	private CategoryRepository categoryRepository;
+	@Test
+	void test5(){
+		Category category = new Category();
+		category.setBoard("자유게시판");
+		this.categoryRepository.save(category);
+	}
 }
