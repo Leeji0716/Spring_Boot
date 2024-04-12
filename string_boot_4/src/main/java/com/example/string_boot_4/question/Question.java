@@ -49,6 +49,4 @@ public class Question {
 
     @ManyToOne
     private Category category;
-
-    //Category
 }

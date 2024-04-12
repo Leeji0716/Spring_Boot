@@ -18,7 +18,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Question findBySubjectAndContent(String subject, String content);
     List<Question> findBySubjectLike(String subject);
     Page<Question> findAll(Pageable pageable);
-    Page<Question> findAllByCategory(Pageable pageable, String board);
+//    Page<Question> findAllByCategory(Pageable pageable, String board);
     Page<Question> findAll(Specification<Question> spec, Pageable pageable);
 
     @Query("select distinct q "
