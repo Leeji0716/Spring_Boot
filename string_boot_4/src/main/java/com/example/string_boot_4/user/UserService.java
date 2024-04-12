@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,5 +55,10 @@ public class UserService {
     public List<Comment> getCommentList(SiteUser user){
         List<Comment> commentList = this.commentRepository.findByAuthor(user);
         return commentList;
+    }
+
+    public void modify(SiteUser user, String temporaryPassword) {
+        user.setPassword(temporaryPassword);
+        this.userRepository.save(user);
     }
 }
