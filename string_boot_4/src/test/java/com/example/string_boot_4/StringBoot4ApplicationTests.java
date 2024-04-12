@@ -97,7 +97,7 @@ class StringBoot4ApplicationTests {
 	void test4() {
 		for (int i = 1; i <= 100; i++) {
 			String content = String.format("답변 페이징 테스트 데이터입니다:[%03d]", i);
-			Question q = questionService.getQuestion(300);
+			Question q = questionService.getQuestion(620);
 			this.answerService.create(q, content, null);
 		}
 	}

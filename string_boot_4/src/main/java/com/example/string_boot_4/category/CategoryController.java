@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @Controller
 public class CategoryController {
-    private CategoryService categoryService;
     @GetMapping("list")
     private String list(@RequestParam(value = "id", defaultValue = "1") int id){
         return "redirect:/question/list/" + id;
