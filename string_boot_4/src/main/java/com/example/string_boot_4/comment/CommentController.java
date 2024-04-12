@@ -57,7 +57,7 @@ public class CommentController {
     }
     private boolean isQuestion(Integer parentId) {
         Question question = questionService.getQuestion(parentId);
-        return question != null && question.getSubject() != null;
+        return question != null && question.getAnswerList() == null;
     }
 
     @PreAuthorize("isAuthenticated()")
