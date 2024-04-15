@@ -84,6 +84,7 @@ public class UserController {
         List<Comment> commentList = this.userService.getCommentList(user);
         model.addAttribute("username", user.getUsername());
         model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
         model.addAttribute("questionList", questionList);
         model.addAttribute("answerList", answerList);
         model.addAttribute("commentList", commentList);

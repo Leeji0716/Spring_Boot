@@ -10,6 +10,10 @@
     <form th:action="@{/user/proDetail}" th:object="${userCreateForm}" method="post">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
+            <label for="profileImage" class="form-label">프로필 사진</label>
+            <input type="file" id="profileImage" name="profileImage" class="form-control">
+        </div>
+        <div class="mb-3">
             <label for="name" class="form-label">사용자 이름</label>
             <input type="text" th:field="*{name}" class="form-control">
         </div>

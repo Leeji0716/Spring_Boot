@@ -15,8 +15,10 @@
                 <a th:href="@{/user/proDetail}" method="post" class="btn btn-outline-secondary">수정</a>
             </div>
         </h5>
+
         <div class="card-text" th:text="|이름 : ${name}|"></div>
         <div class="card-text" th:text="|ID : ${username}|"></div>
+        <div class="card-text" th:text="|Email : ${email}|"></div>
     </div>
 <!--게시물 목록 출력-->
     <div class="card my-3">
