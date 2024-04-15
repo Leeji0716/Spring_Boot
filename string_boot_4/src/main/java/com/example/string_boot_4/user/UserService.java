@@ -57,8 +57,17 @@ public class UserService {
         return commentList;
     }
 
-    public void modify(SiteUser user, String temporaryPassword) {
-        user.setPassword(temporaryPassword);
+    public void passwordModify(SiteUser user, String temporaryPassword) {
+        user.setPassword(passwordEncoder.encode(temporaryPassword));
+        this.userRepository.save(user);
+    }
+
+    public void modify(SiteUser user, String username, String name, String password, String email){
+        user.setUsername(username);
+        user.setName(name);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setEmail(email);
+
         this.userRepository.save(user);
     }
 }

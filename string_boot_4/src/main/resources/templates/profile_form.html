@@ -9,10 +9,10 @@
 <div layout:fragment="content" class="container my-3">
     <h5 class="my-3 border-bottom pb-2">프로필</h5>
     <div class="card my-3">
-        <h5 class="my-3 border-bottom">
+        <h5 class="my-3 border-bottom" style="display: flex; justify-content: space-between; align-items: center;">
             기본 정보
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-secondary" type="button" id="btn_search">수정</button>
+            <div>
+                <a th:href="@{/user/proDetail}" method="post" class="btn btn-outline-secondary">수정</a>
             </div>
         </h5>
         <div class="card-text" th:text="|이름 : ${name}|"></div>
