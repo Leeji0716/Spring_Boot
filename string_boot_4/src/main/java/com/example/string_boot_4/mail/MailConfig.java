@@ -1,4 +1,4 @@
-package com.example.string_boot_4.user;
+package com.example.string_boot_4.mail;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.example.string_boot_4.user;
+package com.example.string_boot_4.mail;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

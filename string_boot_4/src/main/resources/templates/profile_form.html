@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>프로필</title>
@@ -15,7 +14,9 @@
                 <a th:href="@{/user/proDetail}" method="post" class="btn btn-outline-secondary">수정</a>
             </div>
         </h5>
-
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <img th:src="@{'/uploads/' + ${username} + '/' + ${profileImagePath}}" alt="프로필 사진" style="width: 300px; height: 300px;">
+        </div>
         <div class="card-text" th:text="|이름 : ${name}|"></div>
         <div class="card-text" th:text="|ID : ${username}|"></div>
         <div class="card-text" th:text="|Email : ${email}|"></div>

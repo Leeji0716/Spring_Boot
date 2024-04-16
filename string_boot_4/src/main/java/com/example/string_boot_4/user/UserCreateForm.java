@@ -27,4 +27,7 @@ public class UserCreateForm {
     @Size(min = 3, max = 20)
     @NotEmpty(message = "사용자 이름은 필수항목입니다.")
     private String name;
+
+    private String profileImagePath;
+
 }
