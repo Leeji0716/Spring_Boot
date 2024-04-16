@@ -63,10 +63,9 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public void modify(SiteUser user, String username, String name, String email, String password, String profileImagePath){
+    public void modify(SiteUser user, String username, String name, String email, String profileImagePath){
         user.setUsername(username);
         user.setName(name);
-        user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
         user.setProfileImagePath(profileImagePath);
 

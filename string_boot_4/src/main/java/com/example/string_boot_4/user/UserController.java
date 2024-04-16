@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.io.IOException;
 import java.security.Principal;
@@ -30,6 +32,7 @@ public class UserController {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int PASSWORD_LENGTH = 10;
+
 
     public static String generateTemporaryPassword() {
         SecureRandom random = new SecureRandom();
@@ -108,55 +111,57 @@ public class UserController {
         System.out.println(email);
         SiteUser user = userService.getUser(username);
         if (user == null || !user.getEmail().equals(email)) {
-            boolean error=true;
-            model.addAttribute("error", error);
-            return "password_check";
+            model.addAttribute("error", "error");
+            return "password_form";
         }
         // 임시 비밀번호 생성
         String temporaryPassword = generateTemporaryPassword();
         // 임시 비밀번호를 사용자 이메일로 전송
         emailService.sendTemporaryPassword(user.getEmail(), temporaryPassword);
-        boolean success=true;
-        model.addAttribute("success", success);
+        model.addAttribute("success", "success");
 
         userService.passwordModify(user, temporaryPassword);
-        return "password_check";
+        return "password_form";
 
     }
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/passModify")
-    public String passwordModify(UserCreateForm userCreateForm, Principal principal){
+    public String passwordModify(PasswordForm passwordForm, Principal principal){
         SiteUser user = this.userService.getUser(principal.getName());
-        userCreateForm.setPassword1(user.getPassword());
-        userCreateForm.setPassword2(user.getPassword());
+        passwordForm.setPassword1(user.getPassword());
+        passwordForm.setPassword2(user.getPassword());
         return "password_modify";
     }
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/passModify")
-    public String passwordModify(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Principal principal){
+    public String passwordModify(Model model, @Valid PasswordForm passwordForm, BindingResult bindingResult, Principal principal){
         if (bindingResult.hasErrors()) {
-            System.out.println("error");
+            return "password_modify";
+        }
+        if(!passwordForm.getPassword1().equals(passwordForm.getPassword2())){
+            bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 패스워드가 일치하지 않습니다.");
             return "password_modify";
         }
         SiteUser user = this.userService.getUser(principal.getName());
-        userService.passwordModify(user, userCreateForm.getPassword1());
-        return "profile_detail";
+        userService.passwordModify(user, passwordForm.getPassword1());
+        model.addAttribute("successMessage", "비밀번호가 성공적으로 변경되었습니다.");
+        return "password_modify";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/proDetail")
-    public String profileDetail(UserCreateForm userCreateForm, Principal principal){
+    public String profileDetail(UserForm userForm, Principal principal){
         SiteUser user = this.userService.getUser(principal.getName());
-        userCreateForm.setUsername(user.getUsername());
-        userCreateForm.setEmail(user.getEmail());
-        userCreateForm.setName(user.getName());
-        userCreateForm.setProfileImagePath(user.getProfileImagePath());
+        userForm.setUsername(user.getUsername());
+        userForm.setEmail(user.getEmail());
+        userForm.setName(user.getName());
+        userForm.setProfileImagePath(user.getProfileImagePath());
         return "profile_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/proDetail")
-    public String profileDetail(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Principal principal,
+    public String profileDetail(@Valid UserForm userForm, BindingResult bindingResult, Principal principal,
                                 @RequestParam("profileImage") MultipartFile profileImage) {
 
         if (bindingResult.hasErrors()) {
@@ -167,7 +172,7 @@ public class UserController {
             String fileName = StringUtils.cleanPath(profileImage.getOriginalFilename());
             String uploadDir = fileUploadUtil.getUploadDirPath() + principal.getName();
             try {
-                userCreateForm.setProfileImagePath(fileName);
+                userForm.setProfileImagePath(fileName);
                 this.fileUploadUtil.saveFile(uploadDir, fileName, profileImage);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -178,24 +183,26 @@ public class UserController {
         // 사용자가 프로필 사진을 변경하지 않은 경우에는 이전 파일 경로를 유지합니다.
         else {
             String previousProfileImagePath = userService.getUser(principal.getName()).getProfileImagePath();
-            userCreateForm.setProfileImagePath(previousProfileImagePath);
+            userForm.setProfileImagePath(previousProfileImagePath);
         }
 
         SiteUser user = this.userService.getUser(principal.getName());
 
         try {
-            userService.modify(user, userCreateForm.getUsername(), userCreateForm.getName(), user.getPassword(),
-                    userCreateForm.getEmail(), userCreateForm.getProfileImagePath());
+            userService.modify(user, userForm.getUsername(), userForm.getName(),
+                    userForm.getEmail(), userForm.getProfileImagePath());
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
+            System.out.println("에러1");
             bindingResult.reject("signupFailed", "이미 사용중인 ID 혹은 Email 입니다.");
             return "profile_detail";
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("에러2");
             bindingResult.reject("signupFailed", e.getMessage());
             return "profile_detail";
         }
-        return "redirect:/";
+        return "redirect:/user/profile";
     }
 
 
