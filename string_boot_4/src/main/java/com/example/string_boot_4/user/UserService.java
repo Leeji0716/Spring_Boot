@@ -10,6 +10,7 @@ import com.example.string_boot_4.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,7 +63,7 @@ public class UserService {
         this.userRepository.save(user);
     }
 
-    public void modify(SiteUser user, String username, String name, String password, String email, String profileImagePath){
+    public void modify(SiteUser user, String username, String name, String email, String password, String profileImagePath){
         user.setUsername(username);
         user.setName(name);
         user.setPassword(passwordEncoder.encode(password));

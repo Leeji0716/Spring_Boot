@@ -1,6 +1,7 @@
 package com.example.string_boot_4.user;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -30,4 +31,9 @@ public class UserCreateForm {
 
     private String profileImagePath;
 
+    @AssertTrue(message = "새로운 비밀번호와 새로운 비밀번호 확인이 일치하지 않습니다.")
+    public boolean isPasswordMatch() {
+        // 프로필 수정 시에는 비밀번호 관련 필드를 검사하지 않음
+        return true;
+    }
 }

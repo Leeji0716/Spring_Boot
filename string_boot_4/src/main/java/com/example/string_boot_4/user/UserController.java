@@ -95,8 +95,6 @@ public class UserController {
         return "profile_form";
     }
 
-
-
     @GetMapping("/password")
     public String password(){
         return "password_form";
@@ -123,6 +121,26 @@ public class UserController {
 
         userService.passwordModify(user, temporaryPassword);
         return "password_check";
+
+    }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/passModify")
+    public String passwordModify(UserCreateForm userCreateForm, Principal principal){
+        SiteUser user = this.userService.getUser(principal.getName());
+        userCreateForm.setPassword1(user.getPassword());
+        userCreateForm.setPassword2(user.getPassword());
+        return "password_modify";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/passModify")
+    public String passwordModify(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Principal principal){
+        if (bindingResult.hasErrors()) {
+            System.out.println("error");
+            return "password_modify";
+        }
+        SiteUser user = this.userService.getUser(principal.getName());
+        userService.passwordModify(user, userCreateForm.getPassword1());
+        return "profile_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -130,37 +148,43 @@ public class UserController {
     public String profileDetail(UserCreateForm userCreateForm, Principal principal){
         SiteUser user = this.userService.getUser(principal.getName());
         userCreateForm.setUsername(user.getUsername());
-        userCreateForm.setPassword1(user.getPassword());
-        userCreateForm.setPassword2(user.getPassword());
         userCreateForm.setEmail(user.getEmail());
         userCreateForm.setName(user.getName());
+        userCreateForm.setProfileImagePath(user.getProfileImagePath());
         return "profile_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/proDetail")
     public String profileDetail(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Principal principal,
-                                @RequestParam("file") MultipartFile file) {
-        // 프로필 이미지 업로드
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String uploadDir = fileUploadUtil.getUploadDirPath() + principal.getName();
-        try {
-            userCreateForm.setProfileImagePath(fileName);
-            this.fileUploadUtil.saveFile(uploadDir, fileName, file);
-        } catch (IOException e) {
-            e.printStackTrace();
-            bindingResult.reject("fileUploadError", "프로필 이미지 업로드 중 오류가 발생했습니다.");
-            return "profile_detail";
-        }
-
-        SiteUser user = this.userService.getUser(principal.getName());
+                                @RequestParam("profileImage") MultipartFile profileImage) {
 
         if (bindingResult.hasErrors()) {
             return "profile_detail";
         }
+        // 사용자가 새로운 파일을 선택한 경우에만 파일을 업로드하고 경로를 설정합니다.
+        if (!profileImage.isEmpty()) {
+            String fileName = StringUtils.cleanPath(profileImage.getOriginalFilename());
+            String uploadDir = fileUploadUtil.getUploadDirPath() + principal.getName();
+            try {
+                userCreateForm.setProfileImagePath(fileName);
+                this.fileUploadUtil.saveFile(uploadDir, fileName, profileImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+                bindingResult.reject("fileUploadError", "프로필 이미지 업로드 중 오류가 발생했습니다.");
+                return "profile_detail";
+            }
+        }
+        // 사용자가 프로필 사진을 변경하지 않은 경우에는 이전 파일 경로를 유지합니다.
+        else {
+            String previousProfileImagePath = userService.getUser(principal.getName()).getProfileImagePath();
+            userCreateForm.setProfileImagePath(previousProfileImagePath);
+        }
+
+        SiteUser user = this.userService.getUser(principal.getName());
 
         try {
-            userService.modify(user, userCreateForm.getUsername(), userCreateForm.getName(), userCreateForm.getPassword1(),
+            userService.modify(user, userCreateForm.getUsername(), userCreateForm.getName(), user.getPassword(),
                     userCreateForm.getEmail(), userCreateForm.getProfileImagePath());
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
@@ -173,4 +197,6 @@ public class UserController {
         }
         return "redirect:/";
     }
+
+
 }

@@ -11,7 +11,9 @@
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="profileImage" class="form-label">프로필 사진</label>
-            <input type="file" id="profileImage" name="file" class="form-control">
+            <input type="file" id="profileImage" name="profileImage" class="form-control">
+            <!-- 프로필 사진 선택 여부에 따라 파일 이름 출력 -->
+            <div th:if="${userCreateForm.profileImagePath != null}" th:text="|현재 프로필 이미지 : ${userCreateForm.profileImagePath}|"></div>
         </div>
         <div class="mb-3">
             <label for="name" class="form-label">사용자 이름</label>
@@ -22,18 +24,13 @@
             <input type="text" th:field="*{username}" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="password1" class="form-label">비밀번호</label>
-            <input type="password" th:field="*{password1}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="password2" class="form-label">비밀번호 확인</label>
-            <input type="password" th:field="*{password2}" class="form-control">
-        </div>
-        <div class="mb-3">
             <label for="email" class="form-label">이메일</label>
             <input type="email" th:field="*{email}" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">수정 완료</button>
+        <div class="col-6">
+            <a th:href="@{/user/passModify}" method="post" class="btn btn-primary">비밀번호 변경</a>
+        </div>
     </form>
 </div>
 </body>
