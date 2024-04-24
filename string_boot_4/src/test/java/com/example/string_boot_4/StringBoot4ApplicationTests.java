@@ -73,16 +73,16 @@ class StringBoot4ApplicationTests {
 		for (int i = 1; i <= 300; i++) {
 			String subject = String.format("질문답변 테스트 데이터입니다:[%03d]", i);
 			String content = "내용무";
-			Category category = categoryRepository.findById(2); // 혹은 적절한 카테고리 ID를 찾아서 가져오세요
+			Category category = categoryRepository.findById(2);
 			this.questionService.create(subject, content, null, category);
 		}
 	}
 	@Test
 	void test8() {
-		for (int i = 1; i <= 300; i++) {
-			String subject = String.format("질문답변 테스트 데이터입니다:[%03d]", i);
+		for (int i = 1; i <= 200; i++) {
+			String subject = String.format("자유게시판 테스트 데이터입니다:[%03d]", i);
 			String content = "내용무";
-			Category category = categoryRepository.findById(1); // 혹은 적절한 카테고리 ID를 찾아서 가져오세요
+			Category category = categoryRepository.findById(1);
 			Question question = new Question();
 			question.setSubject(subject);
 			question.setContent(content);
@@ -97,7 +97,7 @@ class StringBoot4ApplicationTests {
 	void test4() {
 		for (int i = 1; i <= 100; i++) {
 			String content = String.format("답변 페이징 테스트 데이터입니다:[%03d]", i);
-			Question q = questionService.getQuestion(620);
+			Question q = questionService.getQuestion(501);
 			this.answerService.create(q, content, null);
 		}
 	}

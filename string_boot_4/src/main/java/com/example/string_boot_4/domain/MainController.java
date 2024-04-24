@@ -2,6 +2,7 @@ package com.example.string_boot_4.domain;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -9,5 +10,10 @@ public class MainController {
     @GetMapping("/")
     public String root(){
         return "redirect:/question/list";
+    }
+
+    @GetMapping("/kakao-login")
+    public String kakao(){
+        return "kakao_login";
     }
 }

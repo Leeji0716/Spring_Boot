@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오 로그인</title>
+</head>
+<body>
+
+<!-- Kakao SDK 로드 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script>
+    Kakao.init('c4cdbcd505cd9a331e7acb4e71343942');
+
+    function doKakaoLogin() {
+        var clientId = 'c4cdbcd505cd9a331e7acb4e71343942';
+        var redirectUri = 'http://localhost:8088/kakao-callback';
+        var url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=profile_nickname profile_image`;
+
+        window.location.href = url;
+    }
+
+    window.onload = function() {
+        doKakaoLogin();
+    };
+</script>
+
+<!-- 카카오 로그인 페이지로 이동할 것이므로 버튼은 필요하지 않음 -->
+</body>
+</html>
