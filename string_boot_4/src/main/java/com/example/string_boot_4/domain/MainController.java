@@ -97,8 +97,8 @@ public class MainController {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     System.out.println(authenticationToken);
 
-                    WebAuthenticationDetails details = new WebAuthenticationDetails(request);
-                    authenticationToken.setDetails(details);
+//                    WebAuthenticationDetails details = new WebAuthenticationDetails(request);
+                    authenticationToken.setDetails(userDetails);
                     System.out.println(authenticationToken);
 
                     // SecurityContextHolder에 인증 정보를 설정합니다.
