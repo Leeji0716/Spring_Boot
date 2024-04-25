@@ -7,14 +7,13 @@
 </head>
 <body>
 
-<!-- Kakao SDK 로드 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script>
-    Kakao.init('c4cdbcd505cd9a331e7acb4e71343942');
+    Kakao.init('74369d3656e0458ace28ba20d8a75a5b');
 
     function doKakaoLogin() {
-        var clientId = 'c4cdbcd505cd9a331e7acb4e71343942';
-        var redirectUri = 'http://localhost:8088/kakao-callback';
+        var clientId = '74369d3656e0458ace28ba20d8a75a5b';
+        var redirectUri = 'http://localhost:8088/kakao_callback';
         var url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=profile_nickname profile_image`;
 
         window.location.href = url;
@@ -25,6 +24,5 @@
     };
 </script>
 
-<!-- 카카오 로그인 페이지로 이동할 것이므로 버튼은 필요하지 않음 -->
 </body>
 </html>
