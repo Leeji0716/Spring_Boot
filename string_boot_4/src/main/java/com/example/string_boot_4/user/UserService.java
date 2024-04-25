@@ -54,6 +54,7 @@ public class UserService {
             user.setEmail(id + "@sbb.com");
             String temporaryPassword = generateTemporaryPassword();
             user.setPassword(passwordEncoder.encode(temporaryPassword));
+//            user.setPassword("1234");
             this.userRepository.save(user);
             return user;
         } else {
