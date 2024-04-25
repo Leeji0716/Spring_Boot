@@ -7,6 +7,7 @@ import com.example.string_boot_4.question.Question;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.io.IOException;
+import java.net.URI;
 import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.List;
@@ -30,19 +32,7 @@ public class UserController {
     private final EmailService emailService;
     private final FileUploadUtil fileUploadUtil;
 
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int PASSWORD_LENGTH = 10;
 
-
-    public static String generateTemporaryPassword() {
-        SecureRandom random = new SecureRandom();
-        StringBuilder sb = new StringBuilder(PASSWORD_LENGTH);
-        for (int i = 0; i < PASSWORD_LENGTH; i++) {
-            int randomIndex = random.nextInt(CHARACTERS.length());
-            sb.append(CHARACTERS.charAt(randomIndex));
-        }
-        return sb.toString();
-    }
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm){
@@ -115,7 +105,7 @@ public class UserController {
             return "password_form";
         }
         // 임시 비밀번호 생성
-        String temporaryPassword = generateTemporaryPassword();
+        String temporaryPassword = userService.generateTemporaryPassword();
         // 임시 비밀번호를 사용자 이메일로 전송
         emailService.sendTemporaryPassword(user.getEmail(), temporaryPassword);
         model.addAttribute("success", "success");
@@ -204,6 +194,7 @@ public class UserController {
         }
         return "redirect:/user/profile";
     }
+
 
 
 }
