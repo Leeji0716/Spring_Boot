@@ -41,24 +41,39 @@ public class UserService {
         }
         return sb.toString();
     }
-
-    public SiteUser createkakao(){
-        System.out.println(session.getAttribute("nickname"));
+    public SiteUser createnaver(){
         String nickname = (String) session.getAttribute("nickname");
+        String email = (String) session.getAttribute("email");
+        String id = (String) session.getAttribute("id");
 
         if (nickname != null) {
             SiteUser user = new SiteUser();
-            user.setUsername(nickname);
-            List<SiteUser> users = userRepository.findAll();
-            long id = users.size();
-            user.setEmail(id + "@sbb.com");
+            user.setUsername(id);
+            user.setName(nickname);
+            String temporaryPassword = generateTemporaryPassword();
+            user.setPassword(passwordEncoder.encode(temporaryPassword));
+            user.setEmail(email);
+            this.userRepository.save(user);
+            return user;
+        } else {
+            return null;
+        }
+    }
+    public SiteUser createkakao(){
+        System.out.println(session.getAttribute("nickname"));
+        String nickname = (String) session.getAttribute("nickname");
+        String id = (String) session.getAttribute("id");
+
+        if (nickname != null) {
+            SiteUser user = new SiteUser();
+            user.setUsername(id);
+            user.setName(nickname);
+            user.setEmail(id + "@kakao.com");
             String temporaryPassword = generateTemporaryPassword();
             user.setPassword(passwordEncoder.encode(temporaryPassword));
             this.userRepository.save(user);
             return user;
         } else {
-            // 세션에 필요한 데이터가 없는 경우 예외 처리 또는 다른 로직 수행
-            // 예를 들어, 로그를 남기거나 사용자에게 알림을 보내는 등의 처리를 할 수 있습니다.
             return null;
         }
     }

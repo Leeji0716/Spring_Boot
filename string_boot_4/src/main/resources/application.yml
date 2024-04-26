@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: string_boot_4
+  datasource:
+    driver-class-name: om.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/t6?serverTimezone=UTC
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      format_sql: true
+      show_sql: true
+  mail:
+  host: smtp.gmail.com
+  port: 587
+  username: dldmsgktjf0716@gmail.com
+  password: acpdnpfbihpmhrrw
+
+server:
+  port: 8088
+
+
+upload:
+  directory: C:/Users/admin/Desktop/Leeji/5_JPA/string_boot_4/string_boot_4/src/main/resources/static/uploads/
+
+
+
