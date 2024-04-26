@@ -42,6 +42,14 @@ public class MainController {
         return "redirect:" + url;
     }
 
+    @GetMapping("/naver-login2")
+    public String naver2(){
+        String clientId = "kCAY2j3mmJWd2xUR5V7V";
+        String redirectUri = "http://localhost:8088/naver_callback";
+        String url = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&state=1234";
+        return "redirect:" + url;
+    }
+
     @GetMapping("/kakao-login")
     public String kakaoLogin() {
         String clientId = "74369d3656e0458ace28ba20d8a75a5b";

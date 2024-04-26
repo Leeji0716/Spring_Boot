@@ -22,9 +22,5 @@ spring:
 server:
   port: 8088
 
-
 upload:
   directory: C:/Users/admin/Desktop/Leeji/5_JPA/string_boot_4/string_boot_4/src/main/resources/static/uploads/
-
-
-
