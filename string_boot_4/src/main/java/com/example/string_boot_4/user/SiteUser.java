@@ -29,6 +29,5 @@ public class SiteUser {
     @OneToMany
     private List<Question> questionList;
 
-
     private String profileImagePath;
 }

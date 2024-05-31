@@ -4,6 +4,7 @@ import com.example.string_boot_4.user.SiteUser;
 import com.example.string_boot_4.user.UserSecurityService;
 import com.example.string_boot_4.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONUtil;
@@ -42,13 +43,10 @@ public class MainController {
         return "redirect:" + url;
     }
 
-    @GetMapping("/naver-login2")
-    public String naver2(){
-        String clientId = "kCAY2j3mmJWd2xUR5V7V";
-        String redirectUri = "http://localhost:8088/naver_callback";
-        String url = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&state=1234";
-        return "redirect:" + url;
-    }
+//    @GetMapping("/google-login")
+//    public String google(HttpServletRequest request, HttpServletResponse response){
+//        return "redirect:/oauth2/authorization/google";
+//    }
 
     @GetMapping("/kakao-login")
     public String kakaoLogin() {
